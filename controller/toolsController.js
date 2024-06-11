@@ -36,7 +36,7 @@ export const addToolsController = async (req, res) => {
     const tool = new Tools({ ...fields });
 
     if (file) {
-      tool.photo.data = fs.readFileSync(file.path);
+      tool.photo.data = file.buffer;
       tool.photo.contentType = file.mimetype;
     }
 
@@ -44,7 +44,6 @@ export const addToolsController = async (req, res) => {
     res.status(201).send({
       success: true,
       message: "New tool successfully added",
-      tool,
     });
   } catch (error) {
     console.log(error);
