@@ -1,33 +1,7 @@
 import Tools from "../models/Tools.js";
-import fs from "fs";
 
 export const addToolsController = async (req, res) => {
   try {
-    // const {
-    //   name,
-    //   modelNumber,
-    //   serialNumber,
-    //   quantity,
-    //   qrcode,
-    //   manufacturer,
-    //   location,
-    //   status,
-    //   purchaseDate,
-    // } = req.fields;
-    // console.log(req.fields);
-    // const { photo } = req.files;
-
-    // const tool = new Tools({ ...req.fields });
-    // if (photo) {
-    //   tool.photo.data = fs.readFileSync(photo.path);
-    //   tool.photo.contentType = photo.type;
-    // }
-    // await tool.save();
-    // res.status(201).send({
-    //   success: true,
-    //   message: "New tool successfully added",
-    //   //tool,
-    // });
     const fields = req.body;
     const { file } = req;
 
@@ -50,6 +24,37 @@ export const addToolsController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error in adding tools",
+      error,
+    });
+  }
+};
+
+export const getToolsController = async (req, res) => {
+  try {
+    const tools = await Tools.find({}).select("-photo");
+    res.status(200).send({
+      success: true,
+      count: tools.length,
+      message: "All tools",
+      tools,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting all tools",
+      error,
+    });
+  }
+};
+
+export const getToolsPhotoController = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting tool photo",
       error,
     });
   }

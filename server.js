@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import cors from "cors";
 import multer from "multer";
 import toolsRoutes from "./routes/toolsRoutes.js";
+import { updateToolsData } from "./scheduler/update.js";
 
 dotenv.config();
 const app = express();
@@ -30,3 +31,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
+
+setInterval(() => {
+  updateToolsData();
+}, 5000);
