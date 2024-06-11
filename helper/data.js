@@ -6,7 +6,7 @@ export const changeStatus = () => {
     "Available",
     "Allocated",
     "Damaged",
-    //"out of service",
+    "New device",
   ]);
 
   return status;
