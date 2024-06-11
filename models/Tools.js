@@ -14,6 +14,9 @@ const tools = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  // deviceId: {
+  //   type: String,
+  // },
   quantity: {
     type: Number,
     required: true,
@@ -35,7 +38,7 @@ const tools = new mongoose.Schema({
     required: true,
   },
   purchaseDate: {
-    type: Date,
+    type: String,
     required: true,
   },
   photo: {
