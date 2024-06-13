@@ -7,6 +7,7 @@ import cors from "cors";
 import multer from "multer";
 import toolsRoutes from "./routes/toolsRoutes.js";
 import { updateToolsData } from "./scheduler/update.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -25,6 +26,7 @@ const upload = multer({ storage: storage });
 app.use(upload.single("photo"));
 
 app.use("/api/tools", toolsRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 8080;
 
