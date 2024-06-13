@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.post("/addTools", addToolsController);
 router.get("/getTools", getToolsController);
-router.get("/getToolsPhoto", getToolsPhotoController);
+router.get("/getToolsPhoto/:tid", getToolsPhotoController);
 
 export default router;

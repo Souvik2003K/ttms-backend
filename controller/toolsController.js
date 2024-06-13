@@ -50,6 +50,11 @@ export const getToolsController = async (req, res) => {
 
 export const getToolsPhotoController = async (req, res) => {
   try {
+    const tool = await Tools.findById(req.params.tid).select("photo");
+    if (tool.photo.data) {
+      res.set("Content-type", tool.photo.contentType);
+      return res.status(200).send(tool.photo.data);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send({
