@@ -31,7 +31,7 @@ export const addToolsController = async (req, res) => {
 
 export const getToolsController = async (req, res) => {
   try {
-    const tools = await Tools.find({}).select("-photo");
+    const tools = await Tools.find({}).select("-photo").limit(5);
     res.status(200).send({
       success: true,
       count: tools.length,

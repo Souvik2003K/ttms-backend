@@ -34,6 +34,6 @@ app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
 
-setInterval(() => {
-  updateToolsData();
-}, 5000);
+// setInterval(() => {
+//   updateToolsData();
+// }, 5000);

@@ -36,6 +36,7 @@ const tools = new mongoose.Schema({
   status: {
     type: String,
     required: true,
+    default: "New Device",
   },
   purchaseDate: {
     type: String,
