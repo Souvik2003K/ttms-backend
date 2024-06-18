@@ -65,7 +65,7 @@ export const getToolsPhotoController = async (req, res) => {
   }
 };
 
-export const productListController = async (req, res) => {
+export const toolListController = async (req, res) => {
   try {
     const perPage = 3;
     const page = req.params.page ? req.params.page : 1;
