@@ -1,52 +1,55 @@
 import mongoose from "mongoose";
 
-const tools = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const tools = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    modelNumber: {
+      type: String,
+      required: true,
+    },
+    serialNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    // deviceId: {
+    //   type: String,
+    // },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    qrcode: {
+      type: String,
+      required: true,
+    },
+    manufacturer: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      default: "New Device",
+    },
+    purchaseDate: {
+      type: String,
+      required: true,
+    },
+    photo: {
+      data: Buffer,
+      contentType: String,
+    },
   },
-  modelNumber: {
-    type: String,
-    required: true,
-  },
-  serialNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  // deviceId: {
-  //   type: String,
-  // },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  qrcode: {
-    type: String,
-    required: true,
-  },
-  manufacturer: {
-    type: String,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  status: {
-    type: String,
-    required: true,
-    default: "New Device",
-  },
-  purchaseDate: {
-    type: String,
-    required: true,
-  },
-  photo: {
-    data: Buffer,
-    contentType: String,
-  },
-});
+  { timestamps: true }
+);
 
 const Tools = mongoose.model("Tools", tools);
 

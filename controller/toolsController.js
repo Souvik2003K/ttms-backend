@@ -64,3 +64,27 @@ export const getToolsPhotoController = async (req, res) => {
     });
   }
 };
+
+export const productListController = async (req, res) => {
+  try {
+    const perPage = 3;
+    const page = req.params.page ? req.params.page : 1;
+    const tool = await Tools.find({})
+      .select("-photo")
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+    //.sort({ createdAt: -1 });
+    res.status(200).send({
+      success: true,
+      message: "Tools List fetched successfully",
+      tool,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting list of tool",
+      error,
+    });
+  }
+};
