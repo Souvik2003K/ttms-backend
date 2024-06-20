@@ -3,6 +3,7 @@ import {
   addToolsController,
   getToolsController,
   getToolsPhotoController,
+  toolCountController,
   toolListController,
 } from "../controller/toolsController.js";
 
