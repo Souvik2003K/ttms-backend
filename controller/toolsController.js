@@ -31,7 +31,7 @@ export const addToolsController = async (req, res) => {
 
 export const getToolsController = async (req, res) => {
   try {
-    const tools = await Tools.find({}).select("-photo").limit(5);
+    const tools = await Tools.find({}).select("-photo").limit(3);
     res.status(200).send({
       success: true,
       count: tools.length,
@@ -84,6 +84,24 @@ export const toolListController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error in getting list of tool",
+      error,
+    });
+  }
+};
+
+export const toolCountController = async (req, res) => {
+  try {
+    const tools = await Tools.find({}).select("-photo");
+    res.status(200).send({
+      success: true,
+      count: tools.length,
+      message: "All tools",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting count of tool",
       error,
     });
   }
