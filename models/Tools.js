@@ -57,7 +57,7 @@ const tools = new mongoose.Schema(
   { timestamps: true }
 );
 
-toolsSchema.pre("save", function (next) {
+tools.pre("save", function (next) {
   if (!this.calliberationDate) {
     this.calliberationDate = this.purchaseDate;
   }
