@@ -43,6 +43,12 @@ const tools = new mongoose.Schema(
       type: String,
       required: true,
     },
+    calliberationDate: {
+      type: String,
+    },
+    nextCalliberationDate: {
+      type: String,
+    },
     photo: {
       data: Buffer,
       contentType: String,
@@ -50,6 +56,22 @@ const tools = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+toolsSchema.pre("save", function (next) {
+  if (!this.calliberationDate) {
+    this.calliberationDate = this.purchaseDate;
+  }
+  if (!this.nextCalliberationDate) {
+    const purchaseDate = new Date(this.purchaseDate);
+    const nextCaliberationDate = new Date(
+      purchaseDate.setFullYear(purchaseDate.getFullYear() + 1)
+    );
+    this.nextCalliberationDate = nextCaliberationDate
+      .toISOString()
+      .split("T")[0]; // format as YYYY-MM-DD
+  }
+  next();
+});
 
 const Tools = mongoose.model("Tools", tools);
 
