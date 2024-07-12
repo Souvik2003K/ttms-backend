@@ -62,7 +62,8 @@ tools.pre("save", function (next) {
     this.calliberationDate = this.purchaseDate;
   }
   if (!this.nextCalliberationDate) {
-    const purchaseDate = new Date(this.purchaseDate);
+    const [day, month, year] = this.purchaseDate.split("-");
+    const purchaseDate = new Date(`${year}-${month}-${day}`);
     const nextCaliberationDate = new Date(
       purchaseDate.setFullYear(purchaseDate.getFullYear() + 1)
     );
