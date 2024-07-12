@@ -67,9 +67,16 @@ tools.pre("save", function (next) {
     const nextCaliberationDate = new Date(
       purchaseDate.setFullYear(purchaseDate.getFullYear() + 1)
     );
-    this.nextCalliberationDate = nextCaliberationDate
-      .toISOString()
-      .split("T")[0]; // format as YYYY-MM-DD
+
+    // Format nextCaliberationDate as dd-mm-yyyy
+    const nextDay = String(nextCaliberationDate.getDate()).padStart(2, "0");
+    const nextMonth = String(nextCaliberationDate.getMonth() + 1).padStart(
+      2,
+      "0"
+    );
+    const nextYear = nextCaliberationDate.getFullYear();
+
+    this.nextCalliberationDate = `${nextDay}-${nextMonth}-${nextYear}`;
   }
   next();
 });
