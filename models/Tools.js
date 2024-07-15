@@ -49,6 +49,9 @@ const tools = new mongoose.Schema(
     nextCalliberationDate: {
       type: String,
     },
+    allocatedTo: {
+      type: String,
+    },
     photo: {
       data: Buffer,
       contentType: String,

@@ -106,3 +106,97 @@ export const toolCountController = async (req, res) => {
     });
   }
 };
+
+export const getToolsNameController = async (req, res) => {
+  try {
+    const toolsName = await Tools.aggregate([
+      {
+        $group: {
+          _id: "$name",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: "$_id",
+        },
+      },
+    ]);
+    //console.log(toolsName);
+    res.status(200).send({
+      success: true,
+      message: "All tools name",
+      toolsName,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting tool name",
+      error,
+    });
+  }
+};
+
+export const getToolsSerialController = async (req, res) => {
+  try {
+    const serialNo = await Tools.find({ name: req.params.name }).select(
+      "serialNumber"
+    );
+    //console.log(serialNo);
+    res.status(200).send({
+      success: true,
+      message: "get serial number",
+      serialNo,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting serail number",
+      error,
+    });
+  }
+};
+
+export const getToolsBySerialNoController = async (req, res) => {
+  try {
+    const tool = await Tools.find({ serialNumber: req.params.serial }).select(
+      "-photo"
+    );
+    res.status(200).send({
+      success: true,
+      message: "get tool",
+      tool,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting tools",
+      error,
+    });
+  }
+};
+
+export const updateStatusController = async (req, res) => {
+  try {
+    const tool = await Tools.findOneAndUpdate(
+      { serialNumber: req.params.serial },
+      { status: req.body.status },
+      { new: true }
+    ).select("-photo");
+    res.status(200).send({
+      success: true,
+      message: "Status of tool updated",
+      tool,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in updating status of tool",
+      error,
+    });
+  }
+};
