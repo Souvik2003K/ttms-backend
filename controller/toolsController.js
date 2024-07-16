@@ -109,30 +109,18 @@ export const toolCountController = async (req, res) => {
 
 export const getToolsNameController = async (req, res) => {
   try {
-    const toolsName = await Tools.aggregate([
-      {
-        $group: {
-          _id: "$name",
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          name: "$_id",
-        },
-      },
-    ]);
-    //console.log(toolsName);
+    const tools = await Tools.find({}).select("-photo");
     res.status(200).send({
       success: true,
-      message: "All tools name",
-      toolsName,
+      count: tools.length,
+      message: "All tools",
+      tools,
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Error in getting tool name",
+      message: "Error in getting all tools",
       error,
     });
   }
@@ -140,14 +128,12 @@ export const getToolsNameController = async (req, res) => {
 
 export const getToolsSerialController = async (req, res) => {
   try {
-    const serialNo = await Tools.find({ name: req.params.name }).select(
-      "serialNumber"
-    );
+    const tools = await Tools.find({ name: req.params.name }).select("-photo");
     //console.log(serialNo);
     res.status(200).send({
       success: true,
       message: "get serial number",
-      serialNo,
+      tools,
     });
   } catch (error) {
     console.log(error);
