@@ -50,9 +50,9 @@ const tools = new mongoose.Schema(
       type: String,
     },
     allocatedTo: {
-      type: mongoose.ObjectId,
+      type: String,
       ref: "User",
-      //required: true,
+      required: true,
     },
     photo: {
       data: Buffer,
