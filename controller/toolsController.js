@@ -1,4 +1,5 @@
 import Tools from "../models/Tools.js";
+import moment from "moment"; // A library to handle dates
 
 export const addToolsController = async (req, res) => {
   try {
@@ -182,6 +183,34 @@ export const updateStatusController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error in updating status of tool",
+      error,
+    });
+  }
+};
+
+export const updateCalliberationController = async (req, res) => {
+  try {
+    const today = moment().format("DD-MM-YYYY");
+    const nextCalliberationDate = moment().add(10, "days").format("DD-MM-YYYY");
+
+    const tool = await Tools.findOneAndUpdate(
+      { serialNumber: req.params.serial },
+      {
+        calliberationDate: today,
+        nextCalliberationDate: nextCalliberationDate,
+      },
+      { new: true } // This option returns the modified document
+    ).select("-photo");
+    res.status(200).send({
+      success: true,
+      message: "calliberation date updated",
+      tool,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in updating calliberation date",
       error,
     });
   }

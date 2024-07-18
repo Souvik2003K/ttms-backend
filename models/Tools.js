@@ -52,7 +52,7 @@ const tools = new mongoose.Schema(
     allocatedTo: {
       type: mongoose.ObjectId,
       ref: "User",
-      required: true,
+      //required: true,
     },
     photo: {
       data: Buffer,
@@ -62,16 +62,41 @@ const tools = new mongoose.Schema(
   { timestamps: true }
 );
 
+// this is for 1 year
+// tools.pre("save", function (next) {
+//   if (!this.calliberationDate) {
+//     this.calliberationDate = this.purchaseDate;
+//   }
+//   if (!this.nextCalliberationDate) {
+//     const [day, month, year] = this.purchaseDate.split("-");
+//     const purchaseDate = new Date(`${year}-${month}-${day}`);
+//     const nextCaliberationDate = new Date(
+//       purchaseDate.setFullYear(purchaseDate.getFullYear() + 1)
+//     );
+
+//     // Format nextCaliberationDate as dd-mm-yyyy
+//     const nextDay = String(nextCaliberationDate.getDate()).padStart(2, "0");
+//     const nextMonth = String(nextCaliberationDate.getMonth() + 1).padStart(
+//       2,
+//       "0"
+//     );
+//     const nextYear = nextCaliberationDate.getFullYear();
+
+//     this.nextCalliberationDate = `${nextDay}-${nextMonth}-${nextYear}`;
+//   }
+//   next();
+// });
+
+// this is for 10 days
 tools.pre("save", function (next) {
   if (!this.calliberationDate) {
     this.calliberationDate = this.purchaseDate;
   }
   if (!this.nextCalliberationDate) {
-    const [day, month, year] = this.purchaseDate.split("-");
-    const purchaseDate = new Date(`${year}-${month}-${day}`);
-    const nextCaliberationDate = new Date(
-      purchaseDate.setFullYear(purchaseDate.getFullYear() + 1)
-    );
+    const [day, month, year] = this.calliberationDate.split("-");
+    const calliberationDate = new Date(`${year}-${month}-${day}`);
+    const nextCaliberationDate = new Date(calliberationDate);
+    nextCaliberationDate.setDate(calliberationDate.getDate() + 10);
 
     // Format nextCaliberationDate as dd-mm-yyyy
     const nextDay = String(nextCaliberationDate.getDate()).padStart(2, "0");

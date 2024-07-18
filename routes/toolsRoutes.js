@@ -8,6 +8,7 @@ import {
   getToolsSerialController,
   toolCountController,
   toolListController,
+  updateCalliberationController,
   updateStatusController,
 } from "../controller/toolsController.js";
 
@@ -22,5 +23,6 @@ router.get("/getToolsPhoto/:tid", getToolsPhotoController);
 router.get("/tools-list/:page", toolListController);
 router.get("/count", toolCountController);
 router.put("/updateStatus/:serial", updateStatusController);
+router.put("/calliberated/:serial", updateCalliberationController);
 
 export default router;
