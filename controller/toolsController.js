@@ -215,3 +215,20 @@ export const updateCalliberationController = async (req, res) => {
     });
   }
 };
+
+export const bulkAuditController = async (req, res) => {
+  try {
+    console.log(req);
+    res.status(200).send({
+      success: true,
+      message: "Bulk Audit Successfully done",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in bulk audit",
+      error,
+    });
+  }
+};

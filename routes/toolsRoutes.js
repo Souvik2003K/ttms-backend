@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addToolsController,
+  bulkAuditController,
   getToolsBySerialNoController,
   getToolsController,
   getToolsNameController,
@@ -24,5 +25,6 @@ router.get("/tools-list/:page", toolListController);
 router.get("/count", toolCountController);
 router.put("/updateStatus/:serial", updateStatusController);
 router.put("/calliberated/:serial", updateCalliberationController);
+router.put("/bulkAudit", bulkAuditController);
 
 export default router;
