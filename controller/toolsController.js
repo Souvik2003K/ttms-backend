@@ -170,7 +170,7 @@ export const updateStatusController = async (req, res) => {
   try {
     const tool = await Tools.findOneAndUpdate(
       { serialNumber: req.params.serial },
-      { status: req.body.status },
+      { status: req.body.status, allocatedTo: req.body.user_id },
       { new: true }
     ).select("-photo");
     res.status(200).send({
@@ -199,7 +199,7 @@ export const updateCalliberationController = async (req, res) => {
         calliberationDate: today,
         nextCalliberationDate: nextCalliberationDate,
       },
-      { new: true } // This option returns the modified document
+      { new: true }
     ).select("-photo");
     res.status(200).send({
       success: true,
@@ -218,7 +218,7 @@ export const updateCalliberationController = async (req, res) => {
 
 export const bulkAuditController = async (req, res) => {
   try {
-    console.log(req);
+    console.log(req.body);
     res.status(200).send({
       success: true,
       message: "Bulk Audit Successfully done",
