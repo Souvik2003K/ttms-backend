@@ -9,6 +9,7 @@ import toolsRoutes from "./routes/toolsRoutes.js";
 import { updateToolsData } from "./scheduler/update.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import logsRoutes from "./routes/logsRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use(upload.single("photo"));
 app.use("/api/tools", toolsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/log", logsRoutes);
 
 const PORT = process.env.PORT || 8080;
 
