@@ -33,7 +33,47 @@ export const isAdmin = async (req, res, next) => {
     else {
       return res.status(401).send({
         success: false,
-        message: "Authorised Access",
+        message: "Unauthorised Access for Admin",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting roles",
+      error,
+    });
+  }
+};
+
+export const isSupervisor = async (req, res, next) => {
+  try {
+    const user = await userModel.findById(req.body.userID);
+    if (user?.role === "supervisor") next();
+    else {
+      return res.status(401).send({
+        success: false,
+        message: "Unuthorised Access for Supervisor",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting roles",
+      error,
+    });
+  }
+};
+
+export const isUser = async (req, res, next) => {
+  try {
+    const user = await userModel.findById(req.body.userID);
+    if (user?.role === "user") next();
+    else {
+      return res.status(401).send({
+        success: false,
+        message: "Unuthorised Access for User",
       });
     }
   } catch (error) {

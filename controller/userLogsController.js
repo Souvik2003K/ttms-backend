@@ -20,7 +20,7 @@ export const logsController = async (req, res) => {
 
 export const readLogsController = async (req, res) => {
   try {
-    const allLogs = await userLog.find();
+    const allLogs = await userLog.find().sort({ createdAt: -1 }); 
     res.status(200).send({
       success: true,
       message: "Logs Received",
@@ -29,7 +29,7 @@ export const readLogsController = async (req, res) => {
   } catch (error) {
     res.status(400).send({
       success: false,
-      message: "Cannot read",
+      message: "Cannot read logs",
       error,
     });
   }

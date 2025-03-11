@@ -1,6 +1,7 @@
 import { comparePassword, hashPassword } from "../helper/authHelper.js";
 import userModel from "../models/userModel.js";
 import JWT from "jsonwebtoken";
+import userLog from "../models/userLog.js";
 
 export const loginController = async (req, res) => {
   try {
@@ -27,11 +28,23 @@ export const loginController = async (req, res) => {
     const token = JWT.sign({ userID: user._id }, process.env.SECRET, {
       expiresIn: "7d",
     });
+
+    
+    //Adding log functionality reducing no. of requests
+    const logbody={
+      "id":req.body.username,
+      "message":`${req.body.role} logged in with ID: ${req.body.username}`
+    }
+    const log = new userLog(logbody);
+    log.save();
+
+
     res.status(200).send({
       success: true,
       message: "Log In seccussesfully",
       user,
       token,
+      log,
     });
   } catch (error) {
     res.status(400).send({
@@ -59,6 +72,14 @@ export const registerController = async (req, res) => {
     // console.log(req.body);
     const user = new userModel(req.body);
     await user.save();
+    
+    //Adding log functionality reducing no. of requests
+    const logbody={
+      "id":req.body.username,
+      "message":`Admin ${req.body.userID} Registered a ${req.body.role} with ID: ${req.body.username}`
+    }
+    const log = new userLog(logbody);
+    log.save();
 
     res.status(201).send({
       success: true,
