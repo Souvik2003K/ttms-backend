@@ -170,7 +170,7 @@ export const updateStatusController = async (req, res) => {
   try {
     const tool = await Tools.findOneAndUpdate(
       { serialNumber: req.params.serial },
-      { status: req.body.status, allocatedTo: req.body.user_id },
+      { status: req.body.status, allocatedTo: req.body.allocatedTo },
       { new: true }
     ).select("-photo");
     res.status(200).send({
