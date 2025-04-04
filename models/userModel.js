@@ -23,6 +23,15 @@ const userSchema = new mongoose.Schema(
     location: {
       type: String,
     },
+    allocatedTools: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tools",
+      },
+    ],
+    remarks: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

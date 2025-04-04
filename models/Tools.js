@@ -20,7 +20,6 @@ const tools = new mongoose.Schema(
     // },
     quantity: {
       type: Number,
-      required: true,
     },
     qrcode: {
       type: String,
@@ -52,7 +51,12 @@ const tools = new mongoose.Schema(
     allocatedTo: {
       type: String,
       ref: "User",
-      required: true,
+    },
+    allocatedFrom: {
+      type: Date,
+    },
+    allocatedUpto: {
+      type: Date,
     },
     photo: {
       data: Buffer,

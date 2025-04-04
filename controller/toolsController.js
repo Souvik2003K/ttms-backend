@@ -1,4 +1,6 @@
 import Tools from "../models/Tools.js";
+import userModel from "../models/userModel.js";
+import AllocationHistory from "../models/AllocationHistory.js";
 import moment from "moment"; // A library to handle dates
 
 export const addToolsController = async (req, res) => {
@@ -228,6 +230,125 @@ export const bulkAuditController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error in bulk audit",
+      error,
+    });
+  }
+};
+
+export const toolAllocateController = async (req, res) => {
+  try {
+    const tool = await Tools.findOneAndUpdate(
+      { serialNumber: req.body.serialNumber },
+      {
+        status: "Allocated",
+        allocatedTo: req.body.allocatedTo,
+        allocatedFrom: req.body.allocatedFrom
+          ? new Date(req.body.allocatedFrom)
+          : null,
+        allocatedUpto: req.body.allocatedUpto
+          ? new Date(req.body.allocatedUpto)
+          : null,
+      },
+      { new: true }
+    ).select("-photo");
+
+    // Save allocation history
+    await AllocationHistory.create({
+      username: req.body.allocatedTo,
+      toolsAllocated: [tool.name], // Store tool name
+      allocatedFrom: req.body.allocatedFrom,
+      allocatedUpto: req.body.allocatedUpto,
+    });
+
+    const user = await userModel
+      .findOneAndUpdate(
+        { username: req.body.allocatedTo },
+        { $addToSet: { allocatedTools: tool._id } },
+        { new: true }
+      )
+      .populate("allocatedTools");
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Tools Allocated Successfully",
+      tool,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Can`t Allocate",
+      error,
+    });
+  }
+};
+
+export const toolHandoverController = async (req, res) => {
+  try {
+    const { username, remarks } = req.body;
+
+    // Find the user
+    const user = await userModel.findOne({ username });
+
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Deallocate all tools associated with this user
+    const updatedTools = await Tools.updateMany(
+      { _id: { $in: user.allocatedTools } },
+      {
+        $set: {
+          status: "Available",
+          allocatedTo: null,
+          allocatedFrom: null,
+          allocatedUpto: null,
+        },
+      }
+    );
+
+    // Clear allocatedTools array from user profile
+    user.allocatedTools = [];
+    user.remarks = remarks || ""; // fallback if empty
+    await user.save();
+
+    res.status(200).send({
+      success: true,
+      message: "All tools successfully deallocated from user",
+      updatedToolsCount: updatedTools.modifiedCount,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Can`t Handover",
+      error,
+    });
+  }
+};
+
+export const toolsAllocationHistoryController = async (req, res) => {
+  try {
+    const history = await AllocationHistory.find().sort({ createdAt: -1 });
+
+    res.status(200).send({
+      success: true,
+      history,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error fetching history",
       error,
     });
   }
