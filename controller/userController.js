@@ -2,7 +2,9 @@ import userModel from "../models/userModel.js";
 
 export const getUsersController = async (req, res) => {
   try {
-    const user = await userModel.find({ role: "user" });
+    const user = await userModel
+      .find({ role: "user" })
+      .populate("allocatedTools");
     //console.log(user);
     res.status(200).send({
       success: true,
