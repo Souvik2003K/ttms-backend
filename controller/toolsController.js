@@ -235,38 +235,111 @@ export const bulkAuditController = async (req, res) => {
   }
 };
 
+// export const toolAllocateController = async (req, res) => {
+//   try {
+//     const tool = await Tools.findOneAndUpdate(
+//       { serialNumber: req.body.serialNumber },
+//       {
+//         status: "Allocated",
+//         allocatedTo: req.body.allocatedTo,
+//         allocatedFrom: req.body.allocatedFrom
+//           ? new Date(req.body.allocatedFrom)
+//           : null,
+//         allocatedUpto: req.body.allocatedUpto
+//           ? new Date(req.body.allocatedUpto)
+//           : null,
+//       },
+//       { new: true }
+//     ).select("-photo");
+
+//     // Save allocation history
+//     await AllocationHistory.create({
+//       username: req.body.allocatedTo,
+//       toolsAllocated: [tool.name], // Store tool name
+//       allocatedFrom: req.body.allocatedFrom,
+//       allocatedUpto: req.body.allocatedUpto,
+//     });
+
+//     const user = await userModel
+//       .findOneAndUpdate(
+//         { username: req.body.allocatedTo },
+//         { $addToSet: { allocatedTools: tool._id } },
+//         { new: true }
+//       )
+//       .populate("allocatedTools");
+//     if (!user) {
+//       return res.status(404).send({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+
+//     res.status(200).send({
+//       success: true,
+//       message: "Tools Allocated Successfully",
+//       tool,
+//       user,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send({
+//       success: false,
+//       message: "Can`t Allocate",
+//       error,
+//     });
+//   }
+// };
+
 export const toolAllocateController = async (req, res) => {
   try {
-    const tool = await Tools.findOneAndUpdate(
-      { serialNumber: req.body.serialNumber },
-      {
-        status: "Allocated",
-        allocatedTo: req.body.allocatedTo,
-        allocatedFrom: req.body.allocatedFrom
-          ? new Date(req.body.allocatedFrom)
-          : null,
-        allocatedUpto: req.body.allocatedUpto
-          ? new Date(req.body.allocatedUpto)
-          : null,
-      },
-      { new: true }
-    ).select("-photo");
+    const { serialNumbers, allocatedTo, allocatedFrom, allocatedUpto } =
+      req.body;
+
+    if (!Array.isArray(serialNumbers) || serialNumbers.length === 0) {
+      return res.status(400).send({
+        success: false,
+        message: "No serial numbers provided",
+      });
+    }
+
+    const updatedTools = [];
+
+    for (const serialNumber of serialNumbers) {
+      const tool = await Tools.findOneAndUpdate(
+        { serialNumber },
+        {
+          status: "Allocated",
+          allocatedTo,
+          allocatedFrom: allocatedFrom ? new Date(allocatedFrom) : null,
+          allocatedUpto: allocatedUpto ? new Date(allocatedUpto) : null,
+        },
+        { new: true }
+      ).select("-photo");
+
+      if (tool) updatedTools.push(tool);
+    }
 
     // Save allocation history
     await AllocationHistory.create({
-      username: req.body.allocatedTo,
-      toolsAllocated: [tool.name], // Store tool name
-      allocatedFrom: req.body.allocatedFrom,
-      allocatedUpto: req.body.allocatedUpto,
+      username: allocatedTo,
+      toolsAllocated: updatedTools.map((t) => t.name), // Store all tool names
+      allocatedFrom,
+      allocatedUpto,
     });
 
+    // Update user with all allocated tool IDs
     const user = await userModel
       .findOneAndUpdate(
-        { username: req.body.allocatedTo },
-        { $addToSet: { allocatedTools: tool._id } },
+        { username: allocatedTo },
+        {
+          $addToSet: {
+            allocatedTools: { $each: updatedTools.map((t) => t._id) },
+          },
+        },
         { new: true }
       )
       .populate("allocatedTools");
+
     if (!user) {
       return res.status(404).send({
         success: false,
@@ -277,14 +350,14 @@ export const toolAllocateController = async (req, res) => {
     res.status(200).send({
       success: true,
       message: "Tools Allocated Successfully",
-      tool,
+      tools: updatedTools,
       user,
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Can`t Allocate",
+      message: "Can't Allocate",
       error,
     });
   }
