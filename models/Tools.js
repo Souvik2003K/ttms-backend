@@ -18,6 +18,10 @@ const tools = new mongoose.Schema(
     // deviceId: {
     //   type: String,
     // },
+    tag_id: {
+      type: String,
+      ref: "Device",
+    },
     quantity: {
       type: Number,
     },
