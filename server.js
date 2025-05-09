@@ -10,7 +10,8 @@ import { updateToolsData } from "./scheduler/update.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import logsRoutes from "./routes/logsRoutes.js";
-import chatRoutes from './routes/chatRoutes.js'
+import chatRoutes from "./routes/chatRoutes.js";
+import deviceRoutes from "./routes/deviceRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -32,7 +33,8 @@ app.use("/api/tools", toolsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/log", logsRoutes);
-app.use("/api/chat",chatRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/device", deviceRoutes);
 
 const PORT = process.env.PORT || 8080;
 

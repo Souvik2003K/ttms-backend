@@ -17,6 +17,16 @@ const deviceSchema = new mongoose.Schema({
     latitude: { type: Number },
     longitude: { type: Number },
   },
+  status: {
+    type: String,
+    enum: ["Connected", "Disconnected"],
+  },
+  rssi: {
+    type: String,
+  },
+  battery: {
+    type: Number,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
