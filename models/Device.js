@@ -14,8 +14,8 @@ const deviceSchema = new mongoose.Schema({
     default: "",
   },
   location: {
-    latitude: { type: Number, default: NULL },
-    longitude: { type: Number, default: NULL },
+    latitude: { type: Number, default: null },
+    longitude: { type: Number, default: null },
   },
   status: {
     type: String,
@@ -28,7 +28,7 @@ const deviceSchema = new mongoose.Schema({
   },
   battery: {
     type: Number,
-    default: NULL,
+    default: null,
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
