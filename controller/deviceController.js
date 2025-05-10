@@ -1,4 +1,5 @@
 import Device from "../models/Device.js";
+import { nanoid } from "nanoid";
 
 export const createDeviceController = async (req, res) => {
   try {
