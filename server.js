@@ -6,7 +6,10 @@ import connectDB from "./config/db.js";
 import cors from "cors";
 import multer from "multer";
 import toolsRoutes from "./routes/toolsRoutes.js";
-import { updateToolsData } from "./scheduler/update.js";
+import {
+  updateDeviceCoordinates,
+  updateToolsData,
+} from "./scheduler/update.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import logsRoutes from "./routes/logsRoutes.js";
@@ -42,6 +45,7 @@ app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
 
-// setInterval(() => {
-//   updateToolsData();
-// }, 5000);
+setInterval(() => {
+  //updateToolsData();
+  updateDeviceCoordinates();
+}, 5000);
