@@ -14,18 +14,21 @@ const deviceSchema = new mongoose.Schema({
     default: "",
   },
   location: {
-    latitude: { type: Number },
-    longitude: { type: Number },
+    latitude: { type: Number, default: NULL },
+    longitude: { type: Number, default: NULL },
   },
   status: {
     type: String,
     enum: ["Connected", "Disconnected"],
+    default: "Disconnected",
   },
   rssi: {
     type: String,
+    default: "",
   },
   battery: {
     type: Number,
+    default: NULL,
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
