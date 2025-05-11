@@ -34,7 +34,10 @@ export const addToolsController = async (req, res) => {
 
 export const getToolsController = async (req, res) => {
   try {
-    const tools = await Tools.find({}).select("-photo").limit(3);
+    const tools = await Tools.find({})
+      .select("-photo")
+      .limit(3)
+      .populate("tag_id");
     res.status(200).send({
       success: true,
       count: tools.length,
@@ -75,7 +78,8 @@ export const toolListController = async (req, res) => {
     const tool = await Tools.find({})
       .select("-photo")
       .skip((page - 1) * perPage)
-      .limit(perPage);
+      .limit(perPage)
+      .populate("tag_id");
     //.sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
@@ -112,7 +116,7 @@ export const toolCountController = async (req, res) => {
 
 export const getToolsNameController = async (req, res) => {
   try {
-    const tools = await Tools.find({}).select("-photo");
+    const tools = await Tools.find({}).select("-photo").populate(tag_id);
     res.status(200).send({
       success: true,
       count: tools.length,
