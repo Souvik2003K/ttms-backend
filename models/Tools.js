@@ -19,7 +19,7 @@ const tools = new mongoose.Schema(
     //   type: String,
     // },
     tag_id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Device",
     },
     quantity: {
@@ -27,7 +27,6 @@ const tools = new mongoose.Schema(
     },
     qrcode: {
       type: String,
-      required: true,
     },
     manufacturer: {
       type: String,

@@ -35,3 +35,20 @@ export const createDeviceController = async (req, res) => {
     });
   }
 };
+
+export const getDeviceController = async (req, res) => {
+  try {
+    const device = await Device.find({});
+    res.status(201).send({
+      success: true,
+      message: "Device get successfully",
+      device,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "Error in getting device",
+      error,
+    });
+  }
+};
