@@ -116,7 +116,7 @@ export const toolCountController = async (req, res) => {
 
 export const getToolsNameController = async (req, res) => {
   try {
-    const tools = await Tools.find({}).select("-photo").populate(tag_id);
+    const tools = await Tools.find({}).select("-photo").populate("tag_id");
     res.status(200).send({
       success: true,
       count: tools.length,
