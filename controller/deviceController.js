@@ -52,3 +52,25 @@ export const getDeviceController = async (req, res) => {
     });
   }
 };
+
+export const allocateController = async (req, res) => {
+  try {
+    const tag_id = req.body.tag_id;
+    const device = await Device.findOneAndUpdate(
+      { tag_id },
+      { allocated: true },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      message: "allocation status updated",
+      device,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "Error in updating allocation satus",
+      error,
+    });
+  }
+};
