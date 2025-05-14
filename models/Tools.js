@@ -21,6 +21,7 @@ const tools = new mongoose.Schema(
     tag_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Device",
+      required: true,
     },
     quantity: {
       type: Number,
