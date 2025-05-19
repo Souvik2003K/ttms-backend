@@ -28,9 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Middleware to handle file uploads
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-app.use(upload.single("photo"));
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
+// app.use(upload.single("photo"));
 
 app.use("/api/tools", toolsRoutes);
 app.use("/api/auth", authRoutes);

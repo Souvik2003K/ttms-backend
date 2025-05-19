@@ -15,10 +15,15 @@ import {
   updateCalliberationController,
   updateStatusController,
 } from "../controller/toolsController.js";
+import multer from "multer";
 
 const router = express.Router();
 
-router.post("/addTools", addToolsController);
+// Set up multer to store file in memory
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+router.post("/addTools", upload.single("photo"), addToolsController);
 router.get("/getTools", getToolsController);
 router.get("/getTools/:serial", getToolsBySerialNoController);
 router.get("/getToolsSerialNo/:name", getToolsSerialController);
