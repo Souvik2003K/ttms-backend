@@ -56,8 +56,9 @@ export const getDeviceController = async (req, res) => {
 export const allocateController = async (req, res) => {
   try {
     const tag_id = req.body.tag_id;
+    console.log(tag_id);
     const device = await Device.findOneAndUpdate(
-      { tag_id },
+      { _id: tag_id },
       { allocated: true },
       { new: true }
     );
