@@ -48,4 +48,4 @@ app.listen(PORT, () => {
 setInterval(() => {
   //updateToolsData();
   updateDeviceCoordinates();
-}, 5000);
+}, 600000);
