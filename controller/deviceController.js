@@ -75,3 +75,45 @@ export const allocateController = async (req, res) => {
     });
   }
 };
+
+export const updateDeviceController = async (req, res) => {
+  try {
+    const { macId, rssi, battery } = req.body;
+
+    if (!macId) {
+      return res.status(400).json({
+        success: false,
+        message: "macId is required",
+      });
+    }
+
+    const updatedDevice = await Device.findOneAndUpdate(
+      { macId },
+      {
+        rssi,
+        battery,
+        updatedAt: new Date(),
+      },
+      { new: true } // returns the updated document
+    );
+
+    if (!updatedDevice) {
+      return res.status(404).json({
+        success: false,
+        message: "Device not found with provided macId",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Device updated successfully",
+      device: updatedDevice,
+    });
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: "Error in updating device",
+      error,
+    });
+  }
+};
