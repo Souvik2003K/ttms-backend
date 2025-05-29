@@ -45,7 +45,7 @@ app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
 
-// setInterval(() => {
-//   //updateToolsData();
-//   updateDeviceCoordinates();
-// }, 5000);
+setInterval(() => {
+  //updateToolsData();
+  updateDeviceCoordinates();
+}, 5000);
