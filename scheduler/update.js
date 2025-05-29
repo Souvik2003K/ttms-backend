@@ -30,7 +30,12 @@ export const updateToolsData = async () => {
   }
 };
 
-const latMin = 26.2924417;
+// const latMin = 26.2924417;
+// const latMax = 26.293055;
+// const lonMin = 78.2321;
+// const lonMax = 78.232945;
+
+const latMin = 26.292257;
 const latMax = 26.293055;
 const lonMin = 78.2321;
 const lonMax = 78.232945;
