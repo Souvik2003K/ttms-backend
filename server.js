@@ -16,6 +16,16 @@ import logsRoutes from "./routes/logsRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import deviceRoutes from "./routes/deviceRoutes.js";
 
+//Added
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+// yaha tak
+
 dotenv.config();
 const app = express();
 
@@ -39,13 +49,24 @@ app.use("/api/log", logsRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/device", deviceRoutes);
 
+//Added
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+//yaha tak
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
 
+
 setInterval(() => {
   //updateToolsData();
   updateDeviceCoordinates();
 }, 600000);
+
+
