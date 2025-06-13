@@ -78,7 +78,7 @@ export const allocateController = async (req, res) => {
 
 export const updateDeviceController = async (req, res) => {
   try {
-    const { macId, rssi, battery } = req.body;
+    const { macId, rssi, battery, status } = req.body;
 
     if (!macId) {
       return res.status(400).json({
@@ -92,6 +92,7 @@ export const updateDeviceController = async (req, res) => {
       {
         rssi,
         battery,
+        status,
         updatedAt: new Date(),
       },
       { new: true } // returns the updated document
